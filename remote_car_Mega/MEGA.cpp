@@ -5,7 +5,7 @@
   #include "My_MPU.h"
   #include "machine.h"
   #include "minion.h"
-  #include "dht_esp32.h"
+  #include "my_dht.h"
   #include "myCommands.h"
 
 #define SERIAL_SPEED 115200
@@ -16,8 +16,6 @@ void initMEGA(){
 
   pinMode(LED,OUTPUT);
   
-  initTemp();//Sensor DHT
-  Serial.println("Inicializado initTemp");
   initMachine();
   Serial.println("Inicializado initMachine");
   robotSetSpeed (MEDIUM);
@@ -25,6 +23,8 @@ void initMEGA(){
   Serial.println("Inicializado initServo");
   initUltrasonic();
   Serial.println("Inicializado initUltrasonic");
+  initMPU();
+  Serial.println("Inicializado MPU");
   Serial.println("Waiting for commands...");
 }
 

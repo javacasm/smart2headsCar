@@ -24,7 +24,11 @@
 #define HEART_BEAT_LOW  'p'
 #define HEART_BEAT_HIGH 'P'
 
-#define  END_NUMBER '#'//simplemente para que al depurar sepamos que el nº a terminado
+
+
+#define TEST_ALL 'T'
+
+#define END_NUMBER '#'//simplemente para que al depurar sepamos que el nº a terminado
 
 #define RESULT_OK 0
 #define RESULT_ERROR -1

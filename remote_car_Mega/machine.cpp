@@ -12,6 +12,7 @@
   void robotSetSpeed (int percent){
     M1SetSpeed(percent);
     M2SetSpeed(percent);
+    //Serial.println(percent);
   }
 
 //funciones de movimiento del robot (con motores CC, a partir movimientos del fichero "engines.h")
@@ -184,8 +185,7 @@ void setLimitDistance(int valor){
   
   void robotLeft(int duracion){
     if (bControlDistance == true){
-      M1Backward();
-      M2Forward();
+      bareLeft();
       for (int times = 0; times < duracion/500; times++){
       leftMeasuring();
       //Serial.println(leftDistance);
@@ -196,7 +196,7 @@ void setLimitDistance(int valor){
       }
       robotBrakeInstant();      
     } else {
-      
+      bareLeft();
     }    
 
   }
@@ -242,7 +242,7 @@ void setLimitDistance(int valor){
 
   }
 
-// Backward
+// BACKWARD
 
   void robotBackwardInstant (){
     M1Backward();

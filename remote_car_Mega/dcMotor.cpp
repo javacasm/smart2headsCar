@@ -1,5 +1,6 @@
 //Ficheros necesarios
 #include "pins.h"
+#include "config.h"
 
 //funciones que inicializan las parejas de motores (IN1 e IN2, M1;e IN3 e IN4, M2) 
     void initM1(){
@@ -15,13 +16,13 @@
     }
     
     void M1SetSpeed(int percent){
-      float speed = 1023*percent/100;
+      float speed = SPEED_FACTOR * percent / 100;
       analogWrite(ENA, int(speed));
     }
 
     
     void M2SetSpeed(int percent){
-      float speed = 1023*percent/100;
+      float speed = SPEED_FACTOR*percent/100;
       analogWrite(ENB, int(speed));
     }
 

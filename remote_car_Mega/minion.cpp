@@ -3,9 +3,10 @@
 #include "machine.h"
 #include "myCommands.h"
 #include "myUltrasonic.h"
-#include "dht_esp32.h"
+#include "my_dht.h"
 #include "MEGA.h"
 #include "pins.h"
+#include "My_MPU.h"
 
 char *respuesta = "Not requested.";//los char solo almacena un caracter. Cuando queremos un texto (varios) usamos un puntero, que dice donde empieza ese texto. Si queremos modifiar ese texto usamos un String
 
@@ -149,7 +150,26 @@ char minionReceiveCommand(char incomingByte){
       Serial2.print(HEART_BEAT_HIGH);
       respuesta = " heartbeat High";
       break;
-           
+
+    case TEST_ALL:
+      respuesta = " just testing ...";
+      // Test DHT
+      Serial.print("Test DHT ");
+      temperature = getTemperature();
+      humidity = getHumidity();
+      Serial.print(temperature);
+      Serial.print(" C ");
+      Serial.print(humidity);      
+      Serial.println("%");
+      
+      // Prueba del MPU
+      Serial.print("Test MPU ");
+      getAc();
+      getGy();
+      getTemp();  
+      Serial.println();
+      break;
+    
     default:
       respuesta = " I don't know...";
       Serial.print("Don't know what to do with ... ");

@@ -24,7 +24,7 @@ void getGy (){
   
   Serial.print(" | GyX = "); Serial.print(GyX);
   Serial.print(" | GyY = "); Serial.print(GyY);
-  Serial.print(" | GyZ = "); Serial.println(GyZ);
+  Serial.print(" | GyZ = "); Serial.print(GyZ);
   
 }
 

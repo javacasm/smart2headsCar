@@ -42,7 +42,7 @@
       #define RECV_PIN  12
       
       //pin del dht
-      #define DHTPIN 13
+      #define DHTPIN 22
 
 #else// sin placa escudo, los pines originales
       //pin del led de la placa
