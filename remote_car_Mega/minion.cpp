@@ -32,6 +32,20 @@ char minionReceiveCommand(char incomingByte){
       Serial.print (comSpeed);
       respuesta = " is the speed of Serial2";
       break;
+
+    case CONTROL_CRASHES_COMMAND:
+      Serial2.print(CONTROL_CRASHES_COMMAND);
+      if ( areCrashesControled() == true){
+        setControlDistance(false);
+        Serial2.print(0.0);//para que el ESP32 sepa que está encendido.
+        respuesta = "No crashes are being prevented.";
+      }
+      else{
+        setControlDistance(true);
+        Serial2.print(1.0);
+        respuesta = "Crashes are being prevented.";
+      }
+      break;
  
     case FORWARD_COMMAND:
       robotForwardInstant();
@@ -197,6 +211,20 @@ char minionReceiveCommand(char incomingByte){
       Serial.print("\nTest MPU Temp:");      
       getTemp();      
       Serial.println();
+
+      // Prueba Ultrasonidos
+      Serial.print("Test ultrasonidos:");
+      leftDistance = leftMeasuring();
+      Serial.print(" left:");
+      Serial.print(leftDistance);
+      middleDistance = middleMeasuring();
+      Serial.print(" cm - med:");
+      Serial.print(middleDistance);
+      Serial.print(" cm - right:");
+      rightDistance = rightMeasuring();
+      Serial.print(rightDistance);      
+      Serial.println(" cm");
+
       break;
     
     default:

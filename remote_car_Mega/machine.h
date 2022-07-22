@@ -6,7 +6,10 @@
 //funciones que inicializan los componentes
   void initMachine();
   void robotSetSpeed(int speed);
+  void setControlDistance(bool valor);
+  bool areCrashesControled();
 
+  
 //funciones de movimiento del robot (con motores CC, a partir movimientos del fichero "dcMotor.h")
   void robotForwardInstant ();
   void robotForward(int duracion);

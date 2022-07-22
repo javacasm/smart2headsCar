@@ -53,7 +53,7 @@ void getAc (){
     Serial.print("AcX = "); Serial.print(AcX);
     Serial.print(" | AcY = "); Serial.print(AcY);
     Serial.print(" | AcZ = "); Serial.print(AcZ);
-    Serial.println(" | accelSqrt: " + String(aSqrt));
+    Serial.print(" | accelSqrt: " + String(aSqrt));
   } else {
     Serial.println("Cannod read accel values");
   }

@@ -29,6 +29,10 @@ void setControlDistance(bool valor){
   bControlDistance = valor;
 }
 
+bool areCrashesControled(){
+    return bControlDistance;
+}
+
 int limit_distance = 20;  //distancia mínima que se permite para evitar choques
 
 void setLimitDistance(int valor){
