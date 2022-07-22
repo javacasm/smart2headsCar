@@ -44,7 +44,7 @@ void setLimitDistance(int valor){
   
   void robotForwardInstant(){
     if (bControlDistance == true){
-       middleMeasuring();
+       int middleDistance = middleMeasuring();
       //Serial.println(middleDistance);
       while (middleDistance >limit_distance){
         bareForward();
@@ -63,7 +63,7 @@ void setLimitDistance(int valor){
     if (bControlDistance == true){
       for (int times = 0; times < duracion/500; times++){
         bareForward();
-        middleMeasuring();
+        int middleDistance = middleMeasuring();
         //Serial.println(middleDistance);
         if (middleDistance <limit_distance){
           robotBrakeInstant();
@@ -85,7 +85,7 @@ void setLimitDistance(int valor){
   
   void robotRightInstant (){
     if (bControlDistance == true){
-      rightMeasuring();
+      int rightDistance = rightMeasuring();
       //Serial.println(rightDistance);
       while (rightDistance >limit_distance){
         bareRight();
@@ -103,7 +103,7 @@ void setLimitDistance(int valor){
     if (bControlDistance == true){
       bareRight();
       for (int times = 0; times < duracion/500; times++){
-        rightMeasuring();
+        int rightDistance = rightMeasuring();
        // Serial.println(rightDistance);
         if (rightDistance <limit_distance){
           robotBrakeInstant();
@@ -126,7 +126,7 @@ void setLimitDistance(int valor){
   
   void robotRightPivotInstant (){
     if (bControlDistance == true){
-      rightMeasuring();
+      int rightDistance = rightMeasuring();
    // Serial.println(rightDistance);
       while (rightDistance >limit_distance){
         bareRightPivot();
@@ -146,7 +146,7 @@ void setLimitDistance(int valor){
     if (bControlDistance == true){
       bareRightPivot();
       for (int times = 0; times < duracion/500; times++){
-        rightMeasuring();
+        int rightDistance = rightMeasuring();
         //Serial.println(rightDistance);
         if (rightDistance <= limit_distance){
           robotBrakeInstant();
@@ -169,7 +169,7 @@ void setLimitDistance(int valor){
   
   void robotLeftInstant (){
     if (bControlDistance == true){
-      leftMeasuring();
+      int leftDistance = leftMeasuring();
       //Serial.println(leftDistance);
       while (leftDistance >limit_distance){
         bareLeft();
@@ -187,12 +187,12 @@ void setLimitDistance(int valor){
     if (bControlDistance == true){
       bareLeft();
       for (int times = 0; times < duracion/500; times++){
-      leftMeasuring();
-      //Serial.println(leftDistance);
-      if (leftDistance <limit_distance){
-        robotBrakeInstant();
-      }
-      delay (400);
+        int leftDistance = leftMeasuring();
+        //Serial.println(leftDistance);
+        if (leftDistance <limit_distance){
+          robotBrakeInstant();
+        }
+        delay (400);
       }
       robotBrakeInstant();      
     } else {
@@ -210,7 +210,7 @@ void setLimitDistance(int valor){
   
   void robotLeftPivotInstant (){
     if (bControlDistance == true){
-      leftMeasuring();
+      int leftDistance = leftMeasuring();
       //Serial.println(leftDistance);
       while (leftDistance >limit_distance){
         bareLeftPivot();
@@ -228,7 +228,7 @@ void setLimitDistance(int valor){
     if (bControlDistance == true){
       bareLeftPivot();
       for (int times = 0; times < duracion/500; times++){
-        leftMeasuring();
+        int leftDistance = leftMeasuring();
         //Serial.println(leftDistance);
         if (leftDistance <limit_distance){
           robotBrakeInstant();

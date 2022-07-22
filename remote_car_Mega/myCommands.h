@@ -24,7 +24,8 @@
 #define HEART_BEAT_LOW  'p'
 #define HEART_BEAT_HIGH 'P'
 
-
+#define MPU_ACCELL 'u'
+#define MPU_MAG 'g'
 
 #define TEST_ALL 'T'
 

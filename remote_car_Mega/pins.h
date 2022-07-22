@@ -9,8 +9,8 @@
       #define LED LED_BUILTIN//Macro que significa el led que viene de serie en la placa
       
       //pines del ultrasonidos
-      #define ECHO 10
-      #define TRIG 2
+      #define ECHO A4
+      #define TRIG A5
       
       //pin del infrarrojos (siguelíneas)
       #define LTM !digitalRead(4)

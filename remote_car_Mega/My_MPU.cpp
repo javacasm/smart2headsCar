@@ -1,47 +1,87 @@
 #include<Wire.h>//librería para el i2c
 #include <Arduino.h>
+#include <MPU9250_asukiaaa.h>
+// Codigo del ejemplo GetData de MPU9250_asukiaaa
 
 const int MPU_addr=0x68;  // I2C address of the MPU-6050
-int16_t AcX,AcY,AcZ,GyX,GyY,GyZ;
+int16_t aSqrt,AcX,AcY,AcZ,GyX,GyY,GyZ,mDirection, mX, mY, mZ;
+
+MPU9250_asukiaaa mySensor;
 
 void initMPU (){
-  Wire.begin();
-  Wire.beginTransmission(MPU_addr);
-  Wire.write(0x6B);  // PWR_MGMT_1 register
-  Wire.write(0);     // set to zero (wakes up the MPU-6050)
-  Wire.endTransmission(true);
+  mySensor.beginAccel();
+  mySensor.beginGyro();
+  mySensor.beginMag();
+
+  // You can set your own offset for mag values
+  mySensor.magXOffset = 6;
+  mySensor.magYOffset = -42;
+  mySensor.magZOffset = 13;
+  
+}
+
+void getSensorID(){
+  uint8_t sensorId;
+  if (mySensor.readId(&sensorId) == 0) {
+    Serial.println("sensorId: " + String(sensorId));
+  } else {
+    Serial.println("Cannot read sensorId");
+  }  
 }
 
 void getGy (){
-  Wire.beginTransmission(MPU_addr);
-  Wire.write(0x43);  // starting with register 0x3B (ACCEL_XOUT_H)
-  Wire.endTransmission(false);
-  Wire.requestFrom(MPU_addr,6,true);  // request a total of 14 registers
-  
-  GyX=Wire.read()<<8|Wire.read();  // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
-  GyY=Wire.read()<<8|Wire.read();  // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
-  GyZ=Wire.read()<<8|Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
-  
-  Serial.print(" | GyX = "); Serial.print(GyX);
-  Serial.print(" | GyY = "); Serial.print(GyY);
-  Serial.print(" | GyZ = "); Serial.print(GyZ);
-  
+ 
+ if (mySensor.gyroUpdate() == 0) {
+    GyX = mySensor.gyroX();
+    GyY = mySensor.gyroY();
+    GyZ = mySensor.gyroZ();
+    Serial.print(" GyX = "); Serial.print(GyX);
+    Serial.print(" | GyY = "); Serial.print(GyY);
+    Serial.print(" | GyZ = "); Serial.print(GyZ);
+  } else {
+    Serial.println("Cannot read gyro values");
+  }
+ 
 }
 
 void getAc (){
-  Wire.beginTransmission(MPU_addr);
-  Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
-  Wire.endTransmission(false);
-  Wire.requestFrom(MPU_addr,6,true);  // request a total of 14 registers
-  
-  AcX=Wire.read()<<8|Wire.read();  // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)    
-  AcY=Wire.read()<<8|Wire.read();  // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
-  AcZ=Wire.read()<<8|Wire.read();  // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
+  if (mySensor.accelUpdate() == 0) {
+    AcX = mySensor.accelX();
+    AcY = mySensor.accelY();
+    AcZ = mySensor.accelZ();
+    aSqrt = mySensor.accelSqrt();
+    Serial.print("AcX = "); Serial.print(AcX);
+    Serial.print(" | AcY = "); Serial.print(AcY);
+    Serial.print(" | AcZ = "); Serial.print(AcZ);
+    Serial.println(" | accelSqrt: " + String(aSqrt));
+  } else {
+    Serial.println("Cannod read accel values");
+  }
+}
 
-  Serial.print("AcX = "); Serial.print(AcX);
-  Serial.print(" | AcY = "); Serial.print(AcY);
-  Serial.print(" | AcZ = "); Serial.print(AcZ);
+float getAccelModule(){
+  getAc ();
+  return aSqrt;
+}
 
+void getMag(){
+   if (mySensor.magUpdate() == 0) {
+    mX = mySensor.magX();
+    mY = mySensor.magY();
+    mZ = mySensor.magZ();
+    mDirection = mySensor.magHorizDirection();
+    Serial.print("magX: " + String(mX));
+    Serial.print("| maxY: " + String(mY));
+    Serial.print("| magZ: " + String(mZ));
+    Serial.print("| horizontal direction: " + String(mDirection));
+  } else {
+    Serial.println("Cannot read mag values");
+  }
+}
+
+float getMagDirection(){
+  getMag();
+  return mDirection;
 }
 
 float Tempt;

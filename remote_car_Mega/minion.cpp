@@ -14,6 +14,11 @@ char minionReceiveCommand(char incomingByte){
   float humidity = -100.0;
   float temperature = -100.0;
   float comSpeed= -100.0;
+  float accelModule = -100;
+  float magDirection = -100;
+  int rightDistance = -100;
+  int middleDistance = -100;
+  int leftDistance = -100;
   
   Serial.print(">MEGA>:");
   Serial.println(incomingByte);
@@ -95,7 +100,7 @@ char minionReceiveCommand(char incomingByte){
       break;
 
     case RIGHT_MEASURING_COMMAND:
-      rightMeasuring();
+      rightDistance = rightMeasuring();
       Serial2.print(RIGHT_MEASURING_COMMAND);
       Serial2.print(rightDistance);
       Serial.print(" ");
@@ -104,7 +109,7 @@ char minionReceiveCommand(char incomingByte){
       break;
 
     case MIDDLE_MEASURING_COMMAND:
-      middleMeasuring();
+      middleDistance = middleMeasuring();
       Serial2.print(MIDDLE_MEASURING_COMMAND);
       Serial2.print(middleDistance);
       Serial.print(" ");
@@ -113,7 +118,7 @@ char minionReceiveCommand(char incomingByte){
       break;
 
     case LEFT_MEASURING_COMMAND:
-      leftMeasuring();
+      leftDistance = leftMeasuring();
       Serial2.print(LEFT_MEASURING_COMMAND);
       Serial2.print(leftDistance);
       Serial.print(" ");
@@ -151,6 +156,26 @@ char minionReceiveCommand(char incomingByte){
       respuesta = " heartbeat High";
       break;
 
+    case MPU_ACCELL:
+      accelModule = getAccelModule();
+      Serial.println();
+      Serial2.print(MPU_ACCELL);
+      Serial2.print(accelModule);
+      Serial.print(" ");
+      Serial.print(accelModule);
+      respuesta = " m/s2";
+      break;
+      
+    case MPU_MAG:
+      magDirection = getMagDirection();
+      Serial.println();
+      Serial2.print(MPU_MAG);
+      Serial2.print(magDirection);
+      Serial.print(" ");
+      Serial.print(magDirection);
+      respuesta = " grados ";
+      break;      
+
     case TEST_ALL:
       respuesta = " just testing ...";
       // Test DHT
@@ -163,10 +188,14 @@ char minionReceiveCommand(char incomingByte){
       Serial.println("%");
       
       // Prueba del MPU
-      Serial.print("Test MPU ");
+      Serial.print("Test MPU Accel:");
       getAc();
+      Serial.print("\nTest MPU Gyro:");      
       getGy();
-      getTemp();  
+      Serial.print("\nTest MPU Compass:");      
+      getMag();
+      Serial.print("\nTest MPU Temp:");      
+      getTemp();      
       Serial.println();
       break;
     

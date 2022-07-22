@@ -9,8 +9,6 @@ void initUltrasonic(){
 }
 
 //funciones de medida del ultrasonidos
-int distance;
-
 int Distance_test() {//función que mide distancias
   digitalWrite(TRIG, LOW);   
   delayMicroseconds(2);
@@ -24,28 +22,26 @@ int Distance_test() {//función que mide distancias
 
 #define MEANWHILE 500
 
-//funciones para medir a la derecha, el medio y la izquierda
-int rightDistance;
-int middleDistance;
-int leftDistance;
+// funciones para medir la distancia a la derecha, el medio y la izquierda
+
 
 int rightMeasuring (){
   myservo.write(SERVO_RIGHT);
   delay (MEANWHILE);
-  rightDistance = Distance_test();
+  int rightDistance = Distance_test();
   return rightDistance;
 }
 
 int middleMeasuring(){
   myservo.write(SERVO_CENTRAL);
   delay (MEANWHILE);
-  middleDistance = Distance_test();
+  int middleDistance = Distance_test();
   return middleDistance;
 }
 
 int leftMeasuring (){
   myservo.write(SERVO_LEFT);
   delay (MEANWHILE);              
-  leftDistance = Distance_test();
+  int leftDistance = Distance_test();
   return leftDistance;
 }
