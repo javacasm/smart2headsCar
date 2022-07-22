@@ -21,6 +21,9 @@
 #define TEMPERATURE_COMMAND 't'
 #define HUMIDITY_COMMAND 'h'
 
+#define HEART_BEAT_LOW  'p'
+#define HEART_BEAT_HIGH 'P'
+
 #define  END_NUMBER '#'//simplemente para que al depurar sepamos que el nº a terminado
 
 #define RESULT_OK 0

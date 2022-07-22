@@ -13,6 +13,9 @@
 void initMEGA(){
   Serial.begin(SERIAL_SPEED);
   Serial2.begin(SERIAL_SPEED);  
+
+  pinMode(LED,OUTPUT);
+  
   initTemp();//Sensor DHT
   Serial.println("Inicializado initTemp");
   initMachine();
@@ -22,6 +25,12 @@ void initMEGA(){
   Serial.println("Inicializado initServo");
   initUltrasonic();
   Serial.println("Inicializado initUltrasonic");
+  initMPU();
+  Serial.println("Inicializado MPU");
+  // Prueba del MPU
+  /*getAc();
+  getGy();
+  getTemp();*/
   Serial.println("Waiting for commands...");
 }
 

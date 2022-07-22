@@ -115,6 +115,7 @@ int refresco = 5;
   void handleControls(){
     digitalWrite(LED, HIGH);
     server.send(200, "text/html", SendHTML());
+    digitalWrite(LED, LOW);
   }
   
   // TODO: Debe recuperar el valor de la distancia
@@ -209,7 +210,6 @@ int refresco = 5;
   }
 
 void handleWeather(){
-  
   if (isnan(getTemperature()) == true || isnan(getHumidity()) == true){//Comprobamos que los valores caheados del sensor son posibles
     String message = "<p>ERROR_DHT</p>";
     server.send(200, "text/html",message);

@@ -5,14 +5,19 @@
 #include "myWebs.h"
 #include "myCommands.h"
 #include "myLcd.h"
+#include "config.h"
+#include "pins.h"
 
 #define SERIAL_SPEED 115200
-int frecuenciaRefresco = 2000;
-long ahora;
+int frecuenciaRefresco = 1000;
+long ultimoUpdateLCD; // Le cambio el nombre para que se entienda lo que hace
+int last_beat = HIGH; // Lo usamos para comprobrar que hay conexion y sincronizacion
 
 void initESP32() {
   Serial.begin(SERIAL_SPEED);
   Serial2.begin(SERIAL_SPEED);
+
+  pinMode(LED,OUTPUT);
 
   // Cambio de orden para tener depuracion por el LCD
   Serial.println("initLCD");
@@ -40,17 +45,32 @@ void initESP32() {
 
 void loopESP32() {
   server_handleClient();
-  delay(2);//le damos tiempo al servidor para que escuche datos y haga lo necesario
+  delay(20);//le damos tiempo al servidor para que escuche datos y haga lo necesario
   
 //hacer otro millis para pedir temp
   //char* myIP = "No IP registered";
-  if (millis() > ahora+frecuenciaRefresco){//para que la IP se refesque continuamente
+  if (millis() > ultimoUpdateLCD+frecuenciaRefresco){//para que la IP se refesque continuamente
     eraseLcd();
-    pointerLcd(0,1,"IP:");
-    ipLcd(3,1);
-  }
-  ahora = millis();//volvemos a tomar millis para refrescar tiempo
+    pointerLcd(0,LCD_ROWS-1,"IP:");
+    ipLcd(3,LCD_ROWS-1);
+    ultimoUpdateLCD = millis(); // anotamos el tiempo de la actualizacion   
 
+    if (last_beat ==HIGH) {
+       charLcd(0,0,'H');
+       digitalWrite(LED,HIGH);
+       sendCommand(HEART_BEAT_HIGH);
+       last_beat = LOW;
+    } else {
+       charLcd(0,0,'L');
+       digitalWrite(LED,LOW);
+       sendCommand(HEART_BEAT_LOW);  
+       last_beat = HIGH;  
+    }
+    
+  }
+  
+
+// Lo he comentado porque corta sin motivo ¿Hay otro estado por defecto?
  /* if (isLocalConnection() == true){
     if (WiFi.status() != WL_CONNECTED){//Si estamos conectados al WiFi local y de pronto perdemos conexión
       cutOut();

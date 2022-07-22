@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include "myCommands.h"
+#include "myLcd.h"
+#include "config.h"
 
 int time2waitResponse = 2000;
 int contadorErrores=0; // consideramos error si no hay respuesta
@@ -8,12 +10,15 @@ int numero_errores(){
   return contadorErrores;
 }
 
+
 // funcion para enviar comando por Serial2, mostrandolo por Serial
 // Devuelve un valor: RESULT_ERROR o RESULT_OK
 int sendCommand(char command){  
   Serial2.print(command);
   Serial.print(">ESP32>: ");
   Serial.println(command);
+  pointerLcd(LCD_COLUMNS-2, LCD_ROWS-1, ">");
+  charLcd(LCD_COLUMNS-1, LCD_ROWS-1, command);
   int returnValue = RESULT_ERROR;//al final, dice si todo va bien o no
   long timeout = millis()+time2waitResponse;
   while (millis()<timeout){ // miramos si hay datos durante un tiempo
@@ -31,6 +36,8 @@ int sendCommand(char command){
         Serial.print(") errors: ");
         Serial.println(contadorErrores);
       }
+      pointerLcd(LCD_COLUMNS-2, LCD_ROWS-1, "<");
+      charLcd(LCD_COLUMNS-1, LCD_ROWS-1, charResponse);      
       break; // salimos del while
     } else {
       delay(time2waitResponse/100);//esperamos un poquito

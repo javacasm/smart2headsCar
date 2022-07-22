@@ -6,7 +6,8 @@
 
 #ifdef SHIELD//placa escudo
 //pin del led de la placa
-#define LED LED_BUILTIN//Macro que significa el led que viene de serie en la placa
+#define LED LED_BUILTIN
+//Macro que significa el led que viene de serie en la placa
 
 //pines del ultrasonidos
 #define ECHO 5

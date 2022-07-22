@@ -34,6 +34,11 @@ void pointerLcd (int x, int y, char* message){
   lcd.print(message);
 }
 
+void charLcd (int x, int y, char message){
+  lcd.setCursor(x,y);
+  lcd.print(message);
+}
+
 void ipLcd (int x, int y){
   lcd.setCursor(x,y);
   lcd.print(whatsIP());

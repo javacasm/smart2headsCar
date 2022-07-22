@@ -14,7 +14,7 @@
 
 
 #ifdef JAVACASM
-#define LOCAL_WIFI_SSID "jazzBajo"
+#define LOCAL_WIFI_SSID "OpenWrt"
 #define LOCAL_WIFI_PASS "qazxcvbgtrewsdf"
 
 #else

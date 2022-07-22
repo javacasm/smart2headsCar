@@ -5,6 +5,7 @@
 #include "myUltrasonic.h"
 #include "dht_esp32.h"
 #include "MEGA.h"
+#include "pins.h"
 
 char *respuesta = "Not requested.";//los char solo almacena un caracter. Cuando queremos un texto (varios) usamos un puntero, que dice donde empieza ese texto. Si queremos modifiar ese texto usamos un String
 
@@ -136,7 +137,19 @@ char minionReceiveCommand(char incomingByte){
       Serial.print(humidity);
       respuesta = " %";   
       break;
-      
+
+    case HEART_BEAT_LOW:
+      digitalWrite(LED,LOW);
+      Serial2.print(HEART_BEAT_LOW);
+      respuesta = " heartbeat Low";
+      break;
+
+    case HEART_BEAT_HIGH:
+      digitalWrite(LED,HIGH);
+      Serial2.print(HEART_BEAT_HIGH);
+      respuesta = " heartbeat High";
+      break;
+           
     default:
       respuesta = " I don't know...";
       Serial.print("Don't know what to do with ... ");

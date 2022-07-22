@@ -1,6 +1,8 @@
 // Comandos de comunicaciones
 #define IS_SERIAL_COMMAND 'o'
 
+#define CONTROL_CRASHES_COMMAND 'y'
+
 #define FORWARD_COMMAND 'w'
 #define RIGHT_COMMAND 'd'
 #define RIGHT_PIVOT_COMMAND 'e'
@@ -20,6 +22,14 @@
 
 #define TEMPERATURE_COMMAND 't'
 #define HUMIDITY_COMMAND 'h'
+
+#define HEART_BEAT_LOW  'p'
+#define HEART_BEAT_HIGH 'P'
+
+#define MPU_ACCELL 'u'
+#define MPU_MAG 'g'
+
+#define TEST_ALL 'T'
 
 #define  END_NUMBER '#'//simplemente para que al depurar sepamos que el nº a terminado
 
