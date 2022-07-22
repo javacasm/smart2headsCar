@@ -1,18 +1,29 @@
-//Librerías para pantalla LCD:
+/*/Librerías para pantalla LCD:
   #include <Wire.h> 
   #include <LiquidCrystal_I2C.h>
 //constructores LCD
   LiquidCrystal_I2C lcd(0x27,16,2);//asignamos al LCD la dirección 0x27, usual, y especificamos que tiene 16 espacios y 2 filas
+  */
 //Librerías para WiFi:
   #include <WiFi.h>
   #include <ESPmDNS.h>
   #include <WiFiAP.h>
-  #include "config.h"
-
+  
+#include "config.h"
 #include "myWebs.h"
 
-//Datos de las redes:
-const char* localSsid = LOCAL_WIFI_SSID;//primero probamos a conectarnos a la red local existente
+
+#ifdef JAVACASM
+#define LOCAL_WIFI_SSID "jazzBajo"
+#define LOCAL_WIFI_PASS "qazxcvbgtrewsdf"
+
+#else
+#define LOCAL_WIFI_SSID "Paravisa Digital D5C8"
+#define LOCAL_WIFI_PASS "d5c8a3x4h7w9"
+#endif
+
+//Datos de las redes (primero probamos a conectarnos a la red local existente):
+const char* localSsid = LOCAL_WIFI_SSID;
 const char* localPassword = LOCAL_WIFI_PASS;
 
 const char* softSsid = "Ars longa";//como tras intentarlo no nos hemos podido conectar, creamos nuestra propia red
@@ -75,14 +86,14 @@ void getToTheNet (){
         delay(500);
         Serial.print("Trying to connect... attempt ");
         Serial.println(30-counter);
-        lcd.setCursor(0,0);
+        /*lcd.setCursor(0,0);
         lcd.print("KEEP CALM & STAY");
         lcd.setCursor(0,1);
         lcd.print("TUNNED UNTIL ");
         lcd.setCursor(13,1);
-        lcd.print(counter);
+        lcd.print(counter);*/
         if (counter < 10){
-          lcd.print(" ");
+          /*lcd.print(" ");*/
         }
         if (WiFi.status() == WL_CONNECTED){//si en alguno de los intentos logramos conectarnos nos saca del for
           break;
@@ -110,7 +121,7 @@ void getToTheNet (){
     Serial.print("Local IP address: ");
     Serial.println(whatsIP());//local ip es la que me da el wifi al que nos conectamos
   
-    lcd.clear();
+    /*lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Local connection");
     lcd.setCursor(4,1);
@@ -122,16 +133,16 @@ void getToTheNet (){
     lcd.setCursor(2,1);
     lcd.print(whatsIP());
     delay (IP_TIME);
-    lcd.clear();
+    lcd.clear();*/
   }
  else {
-    Serial.print("Connection to local WiFi network failed");
+    Serial.println("Connection to local WiFi network failed");
     Serial.println("Creating a brand new WiFi network...");
     Serial.println("Configuring access point...");
     Serial.print("SOFT IP address: ");
     Serial.println(whatsIP());
   
-    lcd.clear();
+    /*lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Local connection");
     lcd.setCursor(5,1);
@@ -143,37 +154,34 @@ void getToTheNet (){
     lcd.setCursor(3,1);
     lcd.print(whatsIP());
     delay (IP_TIME);
-    lcd.clear();
+    lcd.clear();*/
   }
 }
 
 void cutOut (){//función para crear una red si nos desconectamos de la red local 
-  if (isLocalConnection() == true){
-    if (WiFi.status() != WL_CONNECTED){//Si estamos conectados al WiFi local y de pronto perdemos conexión
+
       Serial.println("Local Wife has been cut down!");
-      lcd.clear();
+      /*lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Local connection");
       lcd.setCursor(0,1);
-      lcd.print("was interrupted");
+      lcd.print("was interrupted");*/
       //robotBrakeInstant();
       softConnecting();//creamos nuestra propia red
 
-      Serial.print("Connection to local WiFi network: ");
-      Serial.print(whatsSsid());
-      Serial.println(" was interrupted");
+      Serial.println("Connection to the local WiFi network was interrupted");
       Serial.println("Creating a brand new WiFi network...");
       Serial.println("Configuring access point...");
       Serial.print("SOFT IP address: ");
       Serial.println(whatsIP());
     
-      lcd.clear();
+      /*lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("SOFT IP address:");
       lcd.setCursor(3,1);
       lcd.print(whatsIP());
       delay (IP_TIME);
-      lcd.clear();
-    }
-  }
+      lcd.clear();*/
+    
+  
 }

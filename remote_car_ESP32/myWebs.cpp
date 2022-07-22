@@ -117,7 +117,7 @@ int refresco = 5;
     server.send(200, "text/html", SendHTML());
   }
   
-  
+  // TODO: Debe recuperar el valor de la distancia
   void handleRightMeasuring(){
     sendCommand(RIGHT_MEASURING_COMMAND);
     Serial.println("");
@@ -127,6 +127,7 @@ int refresco = 5;
     server.send(200, "text/html", SendHTML());
   }
 
+  // TODO: Debe recuperar el valor de la distancia
   void handleMiddleMeasuring(){
     sendCommand(MIDDLE_MEASURING_COMMAND);
     Serial.println("");
@@ -136,6 +137,7 @@ int refresco = 5;
     server.send(200, "text/html", SendHTML());
   }
 
+  // TODO: Debe recuperar el valor de la distancia
   void handleLeftMeasuring(){
     sendCommand(LEFT_MEASURING_COMMAND);
     Serial.println("");

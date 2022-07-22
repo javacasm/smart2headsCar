@@ -1,3 +1,8 @@
+//Librerías para WiFi:
+  #include <WiFi.h>
+  #include <ESPmDNS.h>
+  #include <WiFiAP.h>
+
 //funciones para saber a qué red estamos conectados
   char* whatsSsid();
   char* whatsPassword();

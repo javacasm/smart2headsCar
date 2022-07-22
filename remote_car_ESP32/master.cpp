@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "myCommands.h"
 
-int time2waitResponse = 50;
+int time2waitResponse = 2000;
 int contadorErrores=0; // consideramos error si no hay respuesta
 
 int numero_errores(){
@@ -15,26 +15,35 @@ int sendCommand(char command){
   Serial.print(">ESP32>: ");
   Serial.println(command);
   int returnValue = RESULT_ERROR;//al final, dice si todo va bien o no
-  delay(time2waitResponse);//esperamos la respuesta
-  if (Serial2.available()>0){//Hay respuesta
-    char charResponse = char(Serial2.read());
-    Serial.print("<ESP32<: ");// Mostramos por Serial para depuracion
-    Serial.println(charResponse);
-    if (charResponse == command){ 
-      returnValue == RESULT_OK;
-    }
-    else {
-      contadorErrores ++;
-      Serial.print("Wrong response: (");
-      Serial.print(charResponse);
-      Serial.print(") errors: ");
-      Serial.println(contadorErrores);
+  long timeout = millis()+time2waitResponse;
+  while (millis()<timeout){ // miramos si hay datos durante un tiempo
+    if (Serial2.available()>0){//Hay respuesta
+      char charResponse = char(Serial2.read());
+      Serial.print("<ESP32<: ");// Mostramos por Serial para depuracion
+      Serial.println(charResponse);
+      if (charResponse == command){ 
+        returnValue == RESULT_OK;
+      }
+      else {
+        contadorErrores ++;
+        Serial.print("Wrong response: (");
+        Serial.print(charResponse);
+        Serial.print(") errors: ");
+        Serial.println(contadorErrores);
+      }
+      break; // salimos del while
+    } else {
+      delay(time2waitResponse/100);//esperamos un poquito
     }
   }
-  else {
-    contadorErrores ++;
-    Serial.print("No responses. Errors: ");
-    Serial.println(contadorErrores);
+  String strExceso;
+  while(Serial2.available()>0){  // leemos si hay exceso de datos
+    char charDeMas = char(Serial2.read());   
+    strExceso += charDeMas;
+  }
+  if (strExceso.length()>0){
+    Serial.print("Exceso de datos:");
+    Serial.println(strExceso);
   }
   return returnValue;
 }
