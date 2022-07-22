@@ -1,0 +1,1 @@
+void minionReceiveCommand(char incomingByte);
