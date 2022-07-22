@@ -7,11 +7,12 @@
 #include "myLcd.h"
 #include "config.h"
 #include "pins.h"
+#include "cached_replies.h"
 
 #define SERIAL_SPEED 115200
 int frecuenciaRefresco = 1000;
-long ultimoUpdateLCD; // Le cambio el nombre para que se entienda lo que hace
-int last_beat = HIGH; // Lo usamos para comprobrar que hay conexion y sincronizacion
+long ultimoUpdateLCD;
+bool last_beat = HIGH; // Lo usamos para comprobrar que hay conexion y sincronizacion
 
 void initESP32() {
   Serial.begin(SERIAL_SPEED);
@@ -39,23 +40,31 @@ void initESP32() {
       reintentar = true;
     }
   }
-
   getToTheNet();
+  
+  updateTemperature();
+  updateHumidity();
+  float temperature = getTemperature();
+  float humidity = getHumidity();
+  Serial.print ("T: ");
+  Serial.print(temperature);
+  Serial.print("ºC & H: ");
+  Serial.print(humidity);
+  Serial.println("%.");
   }
 
 void loopESP32() {
   server_handleClient();
-  delay(20);//le damos tiempo al servidor para que escuche datos y haga lo necesario
+  delay(2);//le damos tiempo al servidor para que escuche datos y haga lo necesario
   
 //hacer otro millis para pedir temp
-  //char* myIP = "No IP registered";
   if (millis() > ultimoUpdateLCD+frecuenciaRefresco){//para que la IP se refesque continuamente
     eraseLcd();
-    pointerLcd(0,LCD_ROWS-1,"IP:");
-    ipLcd(3,LCD_ROWS-1);
+    pointerLcd(0,rowsLcd()-1,"IP:");
+    ipLcd(3,rowsLcd()-1);
     ultimoUpdateLCD = millis(); // anotamos el tiempo de la actualizacion   
 
-    if (last_beat ==HIGH) {
+    if (last_beat == HIGH) {
        charLcd(0,0,'H');
        digitalWrite(LED,HIGH);
        sendCommand(HEART_BEAT_HIGH);
@@ -65,17 +74,25 @@ void loopESP32() {
        digitalWrite(LED,LOW);
        sendCommand(HEART_BEAT_LOW);  
        last_beat = HIGH;  
-    }
-    
+    } 
+
+    updateTemperature();
+    updateHumidity();
+    float temperature = getTemperature();
+    float humidity = getHumidity();
+    Serial.print ("T: ");
+    Serial.print(temperature);
+    Serial.print("ºC & H: ");
+    Serial.print(humidity);
+    Serial.println("%.");
   }
   
-
 // Lo he comentado porque corta sin motivo ¿Hay otro estado por defecto?
- /* if (isLocalConnection() == true){
+  if (isLocalConnection() == true){
     if (WiFi.status() != WL_CONNECTED){//Si estamos conectados al WiFi local y de pronto perdemos conexión
       cutOut();
     }
-  }*/
+  }
 
   if (Serial.available()>0){//le hemos enviado un comando al master para que lo transmita al minion
     char request = char(Serial.read());

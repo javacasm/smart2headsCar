@@ -25,12 +25,6 @@ void initMEGA(){
   Serial.println("Inicializado initServo");
   initUltrasonic();
   Serial.println("Inicializado initUltrasonic");
-  initMPU();
-  Serial.println("Inicializado MPU");
-  // Prueba del MPU
-  /*getAc();
-  getGy();
-  getTemp();*/
   Serial.println("Waiting for commands...");
 }
 

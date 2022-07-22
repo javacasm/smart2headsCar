@@ -1,8 +1,6 @@
 // Comandos de comunicaciones
 #define IS_SERIAL_COMMAND 'o'
 
-#define CONTROL_CRASHES_COMMAND 'y'
-
 #define FORWARD_COMMAND 'w'
 #define RIGHT_COMMAND 'd'
 #define RIGHT_PIVOT_COMMAND 'e'

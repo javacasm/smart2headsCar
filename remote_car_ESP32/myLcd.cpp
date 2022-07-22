@@ -2,22 +2,50 @@
   #include <Wire.h> 
   #include <LiquidCrystal_I2C.h>
 
-  #include "config.h"
-  
-// constructores LCD
-// constantes definidas en config.h
-  LiquidCrystal_I2C lcd(LCD_ADDRESS,LCD_COLUMNS,LCD_ROWS);//asignamos al LCD la dirección 0x27, usual, y especificamos que tiene 16 espacios y 2 filaS
-
+#include "config.h"
 #include "WiFiAccess.h"
 
+//propiedades del LCD usado
+#ifdef JAVACASM
+#define LCD_ADDRESS 0x27
+#define LCD_COLUMNS 20
+#define LCD_ROWS 4
+
+#else
+#define LCD_ADDRESS 0x27
+#define LCD_COLUMNS 16
+#define LCD_ROWS 2
+#endif 
+
+// constructores LCD
+  LiquidCrystal_I2C lcd(LCD_ADDRESS,LCD_COLUMNS,LCD_ROWS);//asignamos al LCD la dirección 0x27, usual, y especificamos que tiene 16 espacios y 2 filaS
+
 void initLcd (){
-  lcd.begin(); // No es init, es begin
+#ifdef JAVACASM 
+  lcd.init(); 
+#else
+  lcd.begin();
+#endif
   lcd.backlight();
 }
+
+char addressLcd(){
+  return LCD_ADDRESS;
+}
+
+int columnsLcd(){
+  return LCD_COLUMNS;
+}
+
+int rowsLcd(){
+  return LCD_ROWS;
+}
+
 
 void eraseLcd(){
   lcd.clear();
 }
+
 
 void intLcd (int x, int y, int message){
   lcd.setCursor(x,y);
@@ -44,7 +72,9 @@ void ipLcd (int x, int y){
   lcd.print(whatsIP());
 }
 
+
 void testLcd(){
   eraseLcd();
-  pointerLcd(0,0,"Test LCD");
+  pointerLcd(0,0,"Test LCD:");
+  pointerLcd(0,1,"Succeeded.");
 }

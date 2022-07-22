@@ -31,9 +31,9 @@ int refresco = 5;
       message += "<td width=\"25%\" align=\"center\" valign=\"middle\"><form method=\"GET\"><button type=\"button\"><img src=\"https://image.freepik.com/vector-gratis/medidor-alto-riesgo_97886-3470.jpg\" width=\"90\" height=\"90\" style=\"vertical-align: middle\"  value=\"SetFast\" onclick=\"window.location.href='/SetFast'\" ></button></td>";//primera fila cuarta celda (fast)
   
       
-      message += "<tr><td width=\"25%\" height=\"100\" align=\"center\" valign=\"middle\"><form method=\"GET\"><button type=\"button\"><img src=\"https://image.flaticon.com/icons/png/512/32/32418.png\" width=\"90\" height=\"90\" style=\"vertical-align: middle\"  value=\"Left\" onclick=\"window.location.href='/Left'\" ></button></td>";//segunda fila primera celda (left)
+      message += "<tr><td width=\"25%\" height=\"100\" align=\"center\" valign=\"middle\"><form method=\"GET\"><button type=\"button\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Small_arrow_pointing_left.svg/1280px-Small_arrow_pointing_left.svg.png\" width=\"90\" height=\"90\" style=\"vertical-align: middle\"  value=\"Left\" onclick=\"window.location.href='/Left'\" ></button></td>";//segunda fila primera celda (left)
       message += "<td width=\"25%\" align=\"center\" valign=\"middle\"><form method=\"GET\"><button type=\"button\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Stop_hand.svg/1024px-Stop_hand.svg.png\" width=\"90\" height=\"90\" style=\"vertical-align: middle\"  value=\"Brake\" onclick=\"window.location.href='/Brake'\" ></button></td>";//segunda fila segunda celda (brake)
-      message += "<td width=\"25%\" align=\"center\" valign=\"middle\"><form method=\"GET\"><button type=\"button\"><img src=\"https://image.flaticon.com/icons/png/512/33/33811.png\" width=\"90\" height=\"90\" style=\"vertical-align: middle\"  value=\"Right\" onclick=\"window.location.href='/Right'\" ></button></td>";//segunda fila tercera celda (right)
+      message += "<td width=\"25%\" align=\"center\" valign=\"middle\"><form method=\"GET\"><button type=\"button\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Arrow_right.svg/1280px-Arrow_right.svg.png\" width=\"90\" height=\"90\" style=\"vertical-align: middle\"  value=\"Right\" onclick=\"window.location.href='/Right'\" ></button></td>";//segunda fila tercera celda (right)
       message += "<td width=\"25%\" align=\"center\" valign=\"middle\"><form method=\"GET\"><button type=\"button\"><img src=\"https://static.vecteezy.com/system/resources/previews/002/191/777/original/risk-icon-on-speedometer-medium-risk-meter-isolated-on-white-background-vector.jpg\" width=\"90\" height=\"90\" style=\"vertical-align: middle\"  value=\"SetMedium\" onclick=\"window.location.href='/SetMedium'\" ></button></td>";//segunda fila cuarta celda (medium)
   
   
@@ -48,7 +48,7 @@ int refresco = 5;
       message += "<div style=\"width: 50%; float:right\">";//siguiente división
       message += "<br>";
       message += "<table border=0 align=\"center\" valign=\"middle\"><tr><td height=\"10\" bgcolor=#000000 ><h2><font face=georgia,monospace>Rightnow weather is:</h2><font></td></table>";//fin título
-      message += "<table border=1 align=\"center\"><tr><td width=\"50%\" height=\"25\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>Temperature:</h4><font></td><td width=\"50%\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>"+String(getTemperature ())+ "ºC</h4><font></td>";//fin primera fila de la tabla (temperatura)
+      message += "<table border=1 align=\"center\"><tr><td width=\"50%\" height=\"25\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>Temperature:</h4><font></td><td width=\"50%\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>"+String(getTemperature())+ "ºC</h4><font></td>";//fin primera fila de la tabla (temperatura)
       message += "<tr><td height=\"25\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>Humidity:</h4><font></td><td align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>"+String(getHumidity())+"%</h4><font></td></table>";// fin segunda fila (humedad)
   
       message += "<table border=0 align=\"center\" valign=\"middle\"><tr><td height=\"10\" bgcolor=#000000 ><h2><font face=georgia,monospace>Car data:</h2><font></td></table>";//fin título
@@ -89,7 +89,7 @@ int refresco = 5;
       message += "<div style=\"width: 50%; float:right\">";//siguiente división
       message += "<br>";
       message += "<table border=0 align=\"center\" valign=\"middle\"><tr><td height=\"10\" bgcolor=#000000 ><h2><font face=georgia,monospace>Rightnow weather is:</h2><font></td></table>";//fin título
-      message += "<table border=1 align=\"center\"><tr><td width=\"50%\" height=\"25\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>Temperature:</h4><font></td><td width=\"50%\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>"+String(getTemperature ())+ "ºC</h4><font></td>";//fin primera fila de la tabla (temperatura)
+      message += "<table border=1 align=\"center\"><tr><td width=\"50%\" height=\"25\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>Temperature:</h4><font></td><td width=\"50%\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>"+String(getTemperature())+ "ºC</h4><font></td>";//fin primera fila de la tabla (temperatura)
       message += "<tr><td height=\"25\" align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>Humidity:</h4><font></td><td align=\"center\" valign=\"middle\"><h4><font face = courier new, monospace>"+String(getHumidity())+"%</h4><font></td></table>";// fin segunda fila (humedad)
   
       message += "<table border=0 align=\"center\" valign=\"middle\"><tr><td height=\"10\" bgcolor=#000000 ><h2><font face=georgia,monospace>Car data:</h2><font></td></table>";//fin título
@@ -120,30 +120,30 @@ int refresco = 5;
   
   // TODO: Debe recuperar el valor de la distancia
   void handleRightMeasuring(){
-    sendCommand(RIGHT_MEASURING_COMMAND);
+    updateRightDistance();
     Serial.println("");
     Serial.print("Right distance is: ");  
-    //Serial.println(rightDistance);
+    Serial.println(getRightDistance());
     Serial.println("");
     server.send(200, "text/html", SendHTML());
   }
 
   // TODO: Debe recuperar el valor de la distancia
   void handleMiddleMeasuring(){
-    sendCommand(MIDDLE_MEASURING_COMMAND);
+    updateMiddleDistance();
     Serial.println("");
     Serial.print("Middle distance is: ");  
-    //Serial.println(middleDistance);
+    Serial.println(getMiddleDistance());
     Serial.println("");
     server.send(200, "text/html", SendHTML());
   }
 
   // TODO: Debe recuperar el valor de la distancia
   void handleLeftMeasuring(){
-    sendCommand(LEFT_MEASURING_COMMAND);
+    updateLeftDistance();;
     Serial.println("");
     Serial.print("Left distance is: ");  
-    //Serial.println(leftDistance);
+    Serial.println(getLeftDistance());
     Serial.println("");
     server.send(200, "text/html", SendHTML());
   }
@@ -239,6 +239,7 @@ void handleWeather(){
   }
   digitalWrite(LED, LOW);
 }
+
 
 void handleNotFound() {
   digitalWrite(LED, HIGH);
