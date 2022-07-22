@@ -17,14 +17,16 @@
 #define LCD_ROWS 2
 #endif 
 
+
+
 // constructores LCD
   LiquidCrystal_I2C lcd(LCD_ADDRESS,LCD_COLUMNS,LCD_ROWS);//asignamos al LCD la dirección 0x27, usual, y especificamos que tiene 16 espacios y 2 filaS
 
 void initLcd (){
 #ifdef JAVACASM 
-  lcd.init(); 
+  lcd.begin(); 
 #else
-  lcd.begin();
+  lcd.init();
 #endif
   lcd.backlight();
 }
@@ -44,12 +46,18 @@ int rowsLcd(){
 
 void eraseLcd(){
   lcd.clear();
+#ifdef DEBUG
+  Serial.println("eraseLcd");
+#endif   
 }
 
 
 void intLcd (int x, int y, int message){
   lcd.setCursor(x,y);
   lcd.print(message);
+#ifdef DEBUG
+  Serial.println(String("[")+String(message)+"@"+String(x)+","+String(y)+String("]"));
+#endif   
 }
 
 void floatLcd(int x, int y, float message){
@@ -60,6 +68,9 @@ void floatLcd(int x, int y, float message){
 void pointerLcd (int x, int y, char* message){
   lcd.setCursor(x,y);
   lcd.print(message);
+#ifdef DEBUG
+  Serial.println(String("[")+String(message)+"@"+String(x)+","+String(y)+String("]"));
+#endif  
 }
 
 void charLcd (int x, int y, char message){

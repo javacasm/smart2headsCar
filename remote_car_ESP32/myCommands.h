@@ -29,6 +29,8 @@
 
 #define TEST_ALL 'T'
 
+#define VERSION 'V'
+
 #define  END_NUMBER '#'//simplemente para que al depurar sepamos que el nº a terminado
 
 #define RESULT_OK 0

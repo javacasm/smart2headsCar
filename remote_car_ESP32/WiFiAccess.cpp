@@ -69,8 +69,8 @@ void softConnecting(){//para crear red propia
   myIP = WiFi.softAPIP();//creamos variable igual a la ip generada automáticamente por arduino
 }
 
-#define IP_TIME 10000//tiempo en que se mostrará la IP en el lcd
-#define MESSAGE_TIME 3000//tiempo que se muestra un mensaje en el lcd
+#define IP_TIME 1000//tiempo en que se mostrará la IP en el lcd
+#define MESSAGE_TIME 1000//tiempo que se muestra un mensaje en el lcd
   
 void getToTheNet (){
   Serial.print ("Connecting to local WiFi network: ");

@@ -7,12 +7,16 @@
   #include "minion.h"
   #include "my_dht.h"
   #include "myCommands.h"
+  #include "config.h"
 
 #define SERIAL_SPEED 115200
 
 void initMEGA(){
   Serial.begin(SERIAL_SPEED);
   Serial2.begin(SERIAL_SPEED);  
+
+  Serial.print("Version:");
+  Serial.println(VERSION);
 
   pinMode(LED,OUTPUT);
   

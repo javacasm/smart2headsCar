@@ -10,6 +10,7 @@
 #include "cached_replies.h"
 
 #define SERIAL_SPEED 115200
+
 int frecuenciaRefresco = 1000;
 long ultimoUpdateLCD;
 bool last_beat = HIGH; // Lo usamos para comprobrar que hay conexion y sincronizacion
@@ -17,6 +18,9 @@ bool last_beat = HIGH; // Lo usamos para comprobrar que hay conexion y sincroniz
 void initESP32() {
   Serial.begin(SERIAL_SPEED);
   Serial2.begin(SERIAL_SPEED);
+
+  Serial.print("Version:");
+  Serial.println(VERSION);
 
   pinMode(LED,OUTPUT);
 
@@ -41,8 +45,9 @@ void initESP32() {
     }
   }
   getToTheNet();
-  
-  updateTemperature();
+
+  // Lo hacemos en el refresco del lCD
+  /*updateTemperature();
   updateHumidity();
   float temperature = getTemperature();
   float humidity = getHumidity();
@@ -50,7 +55,7 @@ void initESP32() {
   Serial.print(temperature);
   Serial.print("ºC & H: ");
   Serial.print(humidity);
-  Serial.println("%.");
+  Serial.println("%."); */
   }
 
 void loopESP32() {
@@ -59,32 +64,39 @@ void loopESP32() {
   
 //hacer otro millis para pedir temp
   if (millis() > ultimoUpdateLCD+frecuenciaRefresco){//para que la IP se refesque continuamente
-    eraseLcd();
+    // eraseLcd(); // Repintamos encima
     pointerLcd(0,rowsLcd()-1,"IP:");
     ipLcd(3,rowsLcd()-1);
-    ultimoUpdateLCD = millis(); // anotamos el tiempo de la actualizacion   
-
-    if (last_beat == HIGH) {
-       charLcd(0,0,'H');
-       digitalWrite(LED,HIGH);
-       sendCommand(HEART_BEAT_HIGH);
-       last_beat = LOW;
-    } else {
-       charLcd(0,0,'L');
-       digitalWrite(LED,LOW);
-       sendCommand(HEART_BEAT_LOW);  
-       last_beat = HIGH;  
-    } 
-
+    pointerLcd(columnsLcd()-7,0,VERSION);
+    pointerLcd(1,0,"T:");
+    pointerLcd(6,0,"H:");
+ 
     updateTemperature();
-    updateHumidity();
     float temperature = getTemperature();
+    intLcd(3,0,(int)temperature);
+    
+    updateHumidity();    
     float humidity = getHumidity();
+    intLcd(8,0,(int)humidity);     
     Serial.print ("T: ");
     Serial.print(temperature);
     Serial.print("ºC & H: ");
     Serial.print(humidity);
     Serial.println("%.");
+
+    // HEARTBEAT
+    if (last_beat == HIGH) {
+       charLcd(0,0,'|');
+       digitalWrite(LED,HIGH);
+       sendCommand(HEART_BEAT_HIGH);
+       last_beat = LOW;
+    } else {
+       charLcd(0,0,'-');
+       digitalWrite(LED,LOW);
+       sendCommand(HEART_BEAT_LOW);  
+       last_beat = HIGH;  
+    }     
+    ultimoUpdateLCD = millis(); // anotamos el tiempo de la actualizacion       
   }
   
 // Lo he comentado porque corta sin motivo ¿Hay otro estado por defecto?

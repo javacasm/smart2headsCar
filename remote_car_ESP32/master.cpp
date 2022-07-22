@@ -68,6 +68,9 @@ int sendCommandInt(char command,int valor){
   Serial.print(valor);
   Serial.println(END_NUMBER);  
   
+  pointerLcd(columnsLcd()-2, rowsLcd()-1, ">");
+  charLcd(columnsLcd()-1, rowsLcd()-1, command);
+  
   int returnValue = RESULT_ERROR;
   delay(time2waitResponse);//esperamos la respuesta
   if (Serial2.available()>0){//Hay respuesta
@@ -84,6 +87,8 @@ int sendCommandInt(char command,int valor){
       Serial.print(" errors: ");
       Serial.println(contadorErrores);
     }
+    pointerLcd(columnsLcd()-2, rowsLcd()-1, "<");
+    charLcd(columnsLcd()-1, rowsLcd()-1, charResponse);      
   }
   else {
     contadorErrores ++;
@@ -102,6 +107,8 @@ int sendCommandFloatReturnFloat (char command, float valor){
   Serial.print(" ");
   Serial.print(valor);
   Serial.println(END_NUMBER);  
+  pointerLcd(columnsLcd()-2, rowsLcd()-1, ">");
+  charLcd(columnsLcd()-1, rowsLcd()-1, command);
   
   float floatResponse = RESULT_ERROR;
   delay(time2waitResponse);//esperamos la respuesta
@@ -111,15 +118,20 @@ int sendCommandFloatReturnFloat (char command, float valor){
     Serial.println(firstCharResponse);
     if (firstCharResponse == command){
       floatResponse = Serial2.parseFloat();//parseo es segmentar datos y entre ellos buscar lo que nos interesa, en este caso busca un float
+#ifdef DEBUG       
       Serial.print("The value has been received: ");
       Serial.println(floatResponse);
+#endif      
       if (Serial2.available()>0){//si el minion padece incontinencia verbal, los datos sobrantes quedarán impresos pero no se usarán 
         Serial.print("Too many data: [");
         while (Serial2.available()>0){
           Serial.print(char(Serial2.read()));
         }
             Serial.println("]");
-      } else Serial.println("No more data.");
+      } 
+#ifdef DEBUG 
+      else Serial.println("No more data.");
+#endif      
     } 
     else {
       contadorErrores ++;
@@ -145,37 +157,50 @@ float sendCommandReturnFloat(char command){
   Serial2.print(command);
   Serial.print(">ESP32>: ");
   Serial.println(command);
-
+  pointerLcd(columnsLcd()-2, rowsLcd()-1, ">");
+  charLcd(columnsLcd()-1, rowsLcd()-1, command);
+  
   float floatResponse = RESULT_ERROR;
-  delay(time2waitResponse);//esperamos la primera respuesta, igual al comando
-  if (Serial2.available()>0){ // Hay respuesta
-    Serial.print("<ESP32<: ");// Mostramos por Serial para depuracion
-    char firstCharResponse = char(Serial2.read());
-    Serial.println(firstCharResponse);
-    if (firstCharResponse == command){
-          floatResponse = Serial2.parseFloat();//parseo es segmentar datos y entre ellos buscar lo que nos interesa, en este caso busca un float
-          Serial.print("The value has been received: ");
-          Serial.println(floatResponse);
-          if (Serial2.available()>0){//si el minion padece incontinencia verbal, los datos sobrantes quedarán impresos pero no se usarán 
-            Serial.print("Too many data: [");
-            while (Serial2.available()>0){
-              Serial.print(char(Serial2.read()));
-            }
-            Serial.println("]");
-          } else Serial.println("No more data.");
-    } 
-    else {
-      contadorErrores ++;
-      Serial.print("Wrong response: ");
-      Serial.print(firstCharResponse);
-      Serial.print(" errors: ");
-      Serial.println(contadorErrores);
+  long timeout = millis()+time2waitResponse;
+  while (millis()<timeout){ // miramos si hay datos durante un tiempo
+   if (Serial2.available()>0){ // Hay respuesta
+      char firstCharResponse = char(Serial2.read());
+      Serial.print("<ESP32<: ");// Mostramos por Serial para depuracion      
+      Serial.println(firstCharResponse);
+      if (firstCharResponse == command){
+            floatResponse = Serial2.parseFloat();//parseo es segmentar datos y entre ellos buscar lo que nos interesa, en este caso busca un float
+  #ifdef DEBUG          
+            Serial.print("The value has been received: ");
+            Serial.println(floatResponse);
+  #endif          
+            if (Serial2.available()>0){//si el minion padece incontinencia verbal, los datos sobrantes quedarán impresos pero no se usarán 
+              Serial.print("Too many data: [");
+              while (Serial2.available()>0){
+                Serial.print(char(Serial2.read()));
+              }
+              Serial.println("]");
+            } 
+  #ifdef DEBUG 
+            else Serial.println("No more data.");
+  #endif          
+      } 
+      else {
+        contadorErrores ++;
+        Serial.print("Wrong response: ");
+        Serial.print(firstCharResponse);
+        Serial.print(" errors: ");
+        Serial.println(contadorErrores);
+      }
+      pointerLcd(columnsLcd()-2, rowsLcd()-1, "<");
+      charLcd(columnsLcd()-1, rowsLcd()-1, firstCharResponse);      
+      break; // salimos del while      
     }
-  }
-  else {
-    contadorErrores ++;
-    Serial.print("No responses. Errors: ");
-    Serial.println(contadorErrores);
+    else {/*
+      contadorErrores ++;
+      Serial.print("No responses. Errors: ");
+      Serial.println(contadorErrores);*/
+      delay(time2waitResponse/100);
+    }
   }
   return floatResponse;
 }

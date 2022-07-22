@@ -27,6 +27,8 @@ bool getWeather() {//obtiene los valores que los dice el getTemp o getHumid
       temperature = float(bTemperature);
       humidity = float(bHumidity);
       last_th_time = now;
+      Serial.print(last_th_time);
+      Serial.println(" Update temp&hum");
       return true;
     }
   }
